@@ -5,4 +5,23 @@ import csv
 import os
 import subprocess
 
-if not 
+if not os.access('xxxxx',os.F_ok):
+	print("file has no exist!")
+	sys.exit(1)
+	
+dblist=csv.reader(os.popen("grep -v ^# xxxx"),delimiter=':',quotechar='"')
+if len(sys.argv)==1:
+		for i in dblist:
+			print(i[0])
+		sys.exit(0)
+		
+for i in dblist:
+	ip=i[1]
+	dbuser=i[0]
+	db=i[3]
+	port=i[4]
+	if sys.argv[1]==dbuser:
+		pwd=subprocess.Popen([".dec",i[2]].stdout=subprocess.PIPE).stdout.readline().strip().decode('utf-8')
+		os.environ['PGPASSWORD']=str(pwd)
+		os.system('echo $PGPASSWORD=')
+		os.system('psql -U '+dbuser+' -d '+db+' -h '+ip+' -p '+port+' -w')
